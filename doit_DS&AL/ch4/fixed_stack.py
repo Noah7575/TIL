@@ -37,5 +37,49 @@ class FixedStack:
         self.stk[self.ptr] = value
         self.ptr += 1
 
-    def pop(self)
+    def pop(self) -> Any:
+        # 스택에서 데이터 팝
+        if self.is_empty():
+            raise FixedStack.Empty
+        self.ptr -= 1
+        return self.stk[self.ptr]
+
+    def peek(self) -> Any:
+        # 피크: 꼭대기 데이터 관찰
+        if self.is_empty():
+            raise FixedStack.Empty
+        return self.stk[self.ptr - 1]
+
+    def clear(self) -> None:
+        # 스택 비우기
+        self.ptr = 0
+
+    def find(self, value: Any) -> Any:
+        # 스택에서 value 찾아 인덱스 반환
+        for i in range(self.ptr -1, -1, -1):
+            # (시작, 끝, 간격)
+            if self.stk[i] == value:
+                return i # 검색 성공
+        return -1 # 검색 실패
+
+    def count(self, value: Any) -> int:
+        # 스택에 있는 value의 개수 반환
+        cnt = 0
+        for i in range(self.ptr):
+            if self.stk[i] == value:
+                cnt += 1
+        return cnt
+
+    def __contains__(self, value: Any) -> bool:
+        # 스택에 value가 있는지 확인
+        return self.count(value) > 0
+        # count는 문자의 개수를 세줌(이터러블에서)
+
+    def dump(self) -> None:
+        if self.is_empty():
+            print("스택이 비어 있습니다. ")
+        else:
+            print(self.stk[:self.ptr])
+            # 리스트 처음부터 끝까지
+
     
