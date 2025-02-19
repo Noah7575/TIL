@@ -22,4 +22,25 @@ def topology_sort():
     result = copy.deepcopy(time)
     q = deque()
 
+    # 진입차수가 0인 노드를 큐에 삽입
+    for i in range(1, v + 1):
+        if indegree[i] == 0:
+            q.append(i)
+
+    # 큐가 빌 때까지 반복
+    while q:
+        # 큐에서 원소 꺼내기
+        now = q.popleft()
+        for i in graph[now]:
+            result[i] = max(result[i], result[now] + time[i])
+            indegree[i] -= 1
+            # 새롭게 진입차수가 0이 되는 노드를 큐에 삽입
+            if indegree[i] == 0:
+                q.append(i)
+
+        for i in range(1, v + 1):
+            print(result)
+
+topology_sort()
+
     
