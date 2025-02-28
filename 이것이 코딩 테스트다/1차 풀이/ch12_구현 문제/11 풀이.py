@@ -20,7 +20,7 @@ for _ in range(L):
 
 
 # 맵 생성
-board = [[0] * (N + 1) for _ in range(N + 1)]
+board = [[0] * (N + 2) for _ in range(N + 2)]
 board[1][1] = 1
 
 # 맵에 사과 표시
@@ -29,8 +29,12 @@ for _ in range(K):
     board[i][j] = 99
 
 # head 시작 좌표
-head_x = 0
-head_y = 0
+head_x = 1
+head_y = 1
+
+# 뱀 몸통 좌표 - 맨 처음이 꼬리, 맨 나중이 머리
+snake = deque()
+snake.append((head_x, head_y))
 
 # 좌표 이동: 우 하 좌 상(오른쪽 90도 회전)
 move = [(0, 1), (1, 0), (0, -1), (-1, 0)]
@@ -44,7 +48,6 @@ if L_queue:
     direction = L_queue.popleft()
 
 while True:
-    time_count += 1
     # 회전 시간이 된 경우
     if time_count == direction[0]:
         if direction[1] == 'D': # 오른쪽 90도 회전
@@ -52,14 +55,13 @@ while True:
         elif direction[1] == 'L': # 왼쪽 90도 회전
             move_index -= 1
         
-        # 다음 회전
+        move_index = (move_index + 4) % 4
+
+        # 다음 회전 정보
         if L_queue:
             direction = L_queue.popleft()
 
-        if move_index > 3:
-            move_index = 0
-        elif move_index < 0:
-            move_index = 3
+    time_count += 1
 
     # 이동시키며 사과 or 벽/몸통 체크
     nx = head_x + move[move_index][0]
@@ -77,11 +79,16 @@ while True:
     if board[nx][ny] == 99:
         head_x, head_y = nx, ny
         board[head_x][head_y] = 1
+        snake.append((head_x, head_y))
 
     elif board[nx][ny] == 0: # 일반적인 경우
-        board[nx][ny] = 1
-        board[head_x][head_y] = 0
         head_x, head_y = nx, ny
+        board[head_x][head_y] = 1
+        snake.append((head_x, head_y))
+
+        # 꼬리좌표 삭제
+        tail_x, tail_y = snake.popleft()
+        board[tail_x][tail_y] = 0
 
 print(time_count)
 
