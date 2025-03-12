@@ -1,16 +1,28 @@
 import sys
 input = sys.stdin.readline
-# input 함수할당
 
-N = int(input())
-numbers = list(int(input().split()))
+N = int(input().strip())
+datas = map(int, input().split())
 
 cnt = 0
-index = 0
-# 소수면 1, 아니면 0
 
-for i in range(N):
-    # i번째 숫자에 대해 소수 판정
-    # 소수인 걸 발견한 경우 index를 1로 만들고 break
-    for j in range(2, numbers[i]):
-        if numbers[i] 
+for data in datas: 
+    flag = 1
+
+    if data == 1:
+        continue
+
+    if data == 2:
+        cnt += 1
+        continue
+    
+    # 나누어 떨어진다면 합성수
+    for i in range(2, data):
+        if data % i == 0:
+            flag = 0
+            break
+    
+    if flag == 1:
+        cnt += 1
+
+print(cnt)
